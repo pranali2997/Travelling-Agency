@@ -3,30 +3,30 @@ pipeline{
     stages {
         stage('Git clone') {
             steps{
-                git branch: 'master',
-                url: 'https://github.com/rohit1097/traveling-agency.git'
+                git branch: 'main',
+                url: 'https://github.com/pranali2997/Travelling-Agency.git'
             }
         }
         stage('Building docker image') {
             steps {
                 script {
-                  sh 'docker build -t traveling-agency .'
+                  sh 'docker build -t p-project .'
                 }
             }
         }
         stage('ECR login & pushing image') {
             steps {
                 script {
-                  sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 943696395732.dkr.ecr.us-east-1.amazonaws.com'    
-                  sh 'docker tag traveling-agency:latest 943696395732.dkr.ecr.us-east-1.amazonaws.com/traveling-agency:latest'
-                  sh 'docker push 943696395732.dkr.ecr.us-east-1.amazonaws.com/traveling-agency:latest'
+                  sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/f3i4g2w2'    
+                  sh 'docker tag p-project:latest public.ecr.aws/f3i4g2w2/p-project:latest'
+                  sh 'docker push public.ecr.aws/f3i4g2w2/p-project:latest'
                 }
             }
         }
         stage('EKS-cluster loging') {
             steps {
                   sh 'rm -rf ~/.kube/config'                  
-                  sh "aws eks --region us-east-1 update-kubeconfig --name r-eks"
+                  sh "aws eks --region us-east-1 update-kubeconfig --name devops-project-cluster"
         }
     }  
         stage('Deplyment & service on eks-cluster') {
