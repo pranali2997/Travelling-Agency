@@ -3,7 +3,7 @@ pipeline{
     stages {
         stage('Git clone') {
             steps{
-                git branch: 'main',
+                git branch: 'master',
                 url: 'https://github.com/pranali2997/Travelling-Agency.git'
             }
         }
